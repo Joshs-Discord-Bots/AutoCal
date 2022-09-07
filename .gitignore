@@ -1,0 +1,8 @@
+__pycache__
+*.json
+*.pyc
+*.txt
+
+/OLD
+cogs/resources/meme.jpg
+/cogs/resources/meme.jpg
