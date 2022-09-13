@@ -1,6 +1,5 @@
 #region ------------------------------------------------------ SETUP -------------------------------------------------
 
-from email.mime import image
 from nextcord.ext import commands
 import nextcord, os, platform, json, sqlite3
 
@@ -62,16 +61,10 @@ client.query = query
 client.execute = execute
 
 
-#region ------------------------------------------------- CUSTOM CLASSES -------------------------------------------
-
-
-
-#endregion
-
 #region ------------------------------------------------- STARTUP FUNCTIONS -------------------------------------------
 
 def clear():
-    return
+    # return
     if platform.system() == 'Windows':
         os.system('cls')
     else:
@@ -87,6 +80,21 @@ async def on_ready():
 
 
 #endregion
+#region --------------------------------------------------- COMMANDS -----------------------------------------------
+
+@client.slash_command()
+async def help(interaction : nextcord.Interaction):
+    embed = nextcord.Embed(
+        title='Commands',
+        color=nextcord.Color.blue())
+    embed.add_field(name='`/unavailability add`', value='Add a "block" of unavailability to a weekday.', inline=True)
+    embed.add_field(name='`/unavailability remove`', value='Remove a "block" of unavailability from a weekday.', inline=True)
+    embed.add_field(name='`/calendar check <user>`', value='Check a user\'s unavailability.', inline=True)
+    embed.add_field(name='`/calendar day <weekday>`', value='Check unavailability for a given day.', inline=True)
+    await interaction.send(embed=embed, ephemeral=True)
+    return
+
+#endregion
 #region ----------------------------------------------------- COGS -------------------------------------------------
 
 whitelist = ['calendar.py']
@@ -96,19 +104,10 @@ for filename in os.listdir('./cogs'):
         cog = f'cogs.{filename[:-3]}'
         client.load_extension(cog)
         cogs.append(cog)
-
-@client.slash_command()
-async def test(interaction : nextcord.Interaction):
-    embed = nextcord.Embed(
-        title='Title',
-        description='Description',
-        color=nextcord.Color.orange())
-    # embed.set_image(interaction.user.avatar)
-    embed.set_thumbnail(interaction.user.avatar)
-    await interaction.send(embed=embed)
-    return
-
 #endregion
+
+
+
 clear()
 print('Booting Up...')
 

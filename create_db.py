@@ -13,7 +13,8 @@ except:
 connection.execute('''
 CREATE TABLE CALENDAR (
     BLOCK_ID        INTEGER         PRIMARY KEY AUTOINCREMENT,
-    USER_ID         INTEGER         NOT NULL,
+    GUILD_ID        NVARCHAR         NOT NULL,
+    USER_ID         NVARCHAR         NOT NULL,
     WEEKDAY         NVARCHAR(9)     NOT NULL,
     START_TIME      TIME            NOT NULL,
     END_TIME        TIME            NOT NULL,
