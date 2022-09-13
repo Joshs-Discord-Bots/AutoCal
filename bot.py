@@ -82,15 +82,17 @@ async def on_ready():
 #endregion
 #region --------------------------------------------------- COMMANDS -----------------------------------------------
 
-@client.slash_command()
+@client.slash_command(description='List of available commands')
 async def help(interaction : nextcord.Interaction):
     embed = nextcord.Embed(
         title='Commands',
         color=nextcord.Color.blue())
-    embed.add_field(name='`/unavailability add`', value='Add a "block" of unavailability to a weekday.', inline=True)
-    embed.add_field(name='`/unavailability remove`', value='Remove a "block" of unavailability from a weekday.', inline=True)
-    embed.add_field(name='`/calendar check <user>`', value='Check a user\'s unavailability.', inline=True)
-    embed.add_field(name='`/calendar day <weekday>`', value='Check unavailability for a given day.', inline=True)
+    embed.add_field(name='`/availability add`', value='Add a "block" of availability to a weekday.', inline=False)
+    embed.add_field(name='`/availability remove`', value='Remove a "block" of availability from a weekday.', inline=False)
+    
+    embed.add_field(name='`/calendar view <user>`', value='View a user\'s calendar.', inline=False)
+    embed.add_field(name='`/calendar day <weekday>`', value='View the availibility for a given day.', inline=False)
+    embed.add_field(name='`/calendar free <user>`', value='Check if a user/group of users are free "right now".', inline=False)
     await interaction.send(embed=embed, ephemeral=True)
     return
 
