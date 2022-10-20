@@ -124,7 +124,7 @@ class Calendar(commands.Cog):
         
         blockDropdown = BlockDropdownView(options)
         embed = nextcord.Embed(title='Delete Blocks', description='Select an availibilty block(s) that you wish to remove!', colour=nextcord.Colour.red())
-        await interaction.send(view=blockDropdown, embed=embed)
+        await interaction.send(view=blockDropdown, embed=embed, ephemeral=False)
         return
 
 
@@ -145,7 +145,7 @@ class Calendar(commands.Cog):
             if dayBlocks == '': dayBlocks = 'Not Free'
             embed.add_field(name=day.capitalize(), value=dayBlocks, inline=True)
         
-        await interaction.send(embed=embed)
+        await interaction.send(embed=embed, ephemeral=True)
         return
     
 
@@ -180,6 +180,7 @@ class Calendar(commands.Cog):
     async def free(self, interaction: nextcord.Interaction,
     userChoice: nextcord.Member = nextcord.SlashOption(name='user', description='Check if user is free', required=False),
     roleChoice: nextcord.Role = nextcord.SlashOption(name='role', description='Start typing the name of the role for more options', required=False),
+    dayChoice: str = nextcord.SlashOption(name='weekday', description='Day to check availability', choices={'Monday': 'monday', 'Tuesday': 'tuesday', 'Wednesday': 'wednesday', 'Thursday': 'thursday', 'Friday': 'friday', 'Saturday': 'saturday', 'Sunday': 'sunday'}, default=datetime.now().strftime('%A').lower())
     ):
         users: nextcord.User = []
         if userChoice: users.append(userChoice)
@@ -194,7 +195,7 @@ class Calendar(commands.Cog):
         now = datetime.now().time()
         for user in users:
             if user.bot: continue
-            blocks = self.client.query(f"SELECT * FROM CALENDAR WHERE GUILD_ID='{interaction.guild_id}' AND USER_ID='{user.id}'")
+            blocks = self.client.query(f"SELECT * FROM CALENDAR WHERE GUILD_ID='{interaction.guild_id}' AND USER_ID='{user.id}' AND WEEKDAY='{dayChoice}'")
             busy = False
             for block in blocks:
                 if parse_time(block[4]) < now and parse_time(block[5]) > now:

@@ -92,7 +92,7 @@ async def help(interaction : nextcord.Interaction):
     
     embed.add_field(name='`/calendar view <user>`', value='View a user\'s calendar.', inline=False)
     embed.add_field(name='`/calendar day <weekday>`', value='View the availibility for a given day.', inline=False)
-    embed.add_field(name='`/calendar free <user>`', value='Check if a user/group of users are free "right now".', inline=False)
+    embed.add_field(name='`/calendar free <user>`', value='Check if a user/group of users are free.', inline=False)
     await interaction.send(embed=embed, ephemeral=True)
     return
 
