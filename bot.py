@@ -2,6 +2,7 @@
 
 from nextcord.ext import commands
 import nextcord, os, platform, json, sqlite3
+from time import sleep
 
 def read(readFilename):
     try:
@@ -113,4 +114,10 @@ for filename in os.listdir('./cogs'):
 clear()
 print('Booting Up...')
 
-client.run(client.token)
+while True:
+    try:
+        client.run(client.token)
+    except:
+        print('Failed to start bot')
+        print('Retrying in 5 seconds...')
+        sleep(5)
