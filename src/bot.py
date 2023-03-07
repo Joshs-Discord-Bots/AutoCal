@@ -37,27 +37,41 @@ def execute(query):
     connection.close()
     return
 
-if not os.path.isfile('config.json'):
-    def_config = {
-        'token': 'TOKEN',
-        'intents': {'messages': False, 'members': False, 'guilds': False},
-        'prefix': '-',
-        'admins': []
-    }
-    write(def_config, 'config.json')
 
-config = read('config.json')
+# Create config file
+config = {}
+envTypes = {
+    "str": ['TOKEN', 'DEVTOKEN', 'PREFIX', 'ADMINS'],
+    "bool": ['DEVMODE', 'MESSAGES', 'MEMBERS', 'GUILDS', 'VOICE_STATES']
+}
+# Ensure .env format
+for envType in envTypes:
+    for envVar in envTypes[envType]:
+        envVal = os.environ[envVar]
+        # Convert bool string to bools
+        if envType == 'bool':
+            envVal = os.environ[envVar].lower() in ['true']
+        # Check for missing environment variables
+        if envVar not in os.environ:
+            print(f'"{envVar}" environment variable not initialised! Please ensure you have a VALID .env file')
+            print('Please read the README.md file for more details.')
+            exit()
+        config[envVar] = envVal
 
 intents = nextcord.Intents.default()
-intents.message_content = config['intents']['messages']
-intents.members = config['intents']['members']
-intents.guilds = config['intents']['guilds']
+intents.message_content = config['MESSAGES']
+intents.members = config['MEMBERS']
+intents.guilds = config['GUILDS']
+intents.voice_states = config['VOICE_STATES']
 
-prefix = config['prefix']
+client = commands.Bot(command_prefix=config['PREFIX'], intents=intents)
 
-client = commands.Bot(command_prefix=prefix, intents=intents)
-client.token = config['token']
-client.admins = config['admins']
+client.read = read
+client.write = write
+client.token = config['TOKEN']
+client.admins = config['ADMINS']
+client.dev = config['DEVMODE']
+
 client.query = query
 client.execute = execute
 
@@ -117,7 +131,10 @@ print('Booting Up...')
 while True:
     try:
         client.run(client.token)
-    except:
+    except Exception as error:
         print('Failed to start bot')
+        print('-'*10+' Error '+'-'*10)
+        print(error)
+        print('-'*30)
         print('Retrying in 5 seconds...')
         sleep(5)
