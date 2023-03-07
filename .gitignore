@@ -1,7 +1,6 @@
 __pycache__
 *.json
 *.pyc
-*.txt
 *.env
 
 /src/test
