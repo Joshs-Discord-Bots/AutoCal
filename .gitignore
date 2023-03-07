@@ -3,7 +3,7 @@ __pycache__
 *.pyc
 *.txt
 
-/OLD
+/src/test
 cogs/resources/meme.jpg
 /cogs/resources/meme.jpg
 calendar.db
