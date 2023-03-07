@@ -69,7 +69,8 @@ client = commands.Bot(command_prefix=config['PREFIX'], intents=intents)
 client.read = read
 client.write = write
 client.token = config['TOKEN']
-client.admins = config['ADMINS']
+client.admins = [int(id) for id in config['ADMINS'].replace(' ','').split(',')]
+print(client.admins)
 client.dev = config['DEVMODE']
 
 client.query = query
