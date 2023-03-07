@@ -92,6 +92,7 @@ def admin(member):
 async def on_ready():
     clear()
     print(f'{client.user} has connected to Discord!')
+    await client.get_user(client.admins[0]).send(f'{client.user} has connected to Discord!')
 
 
 #endregion
